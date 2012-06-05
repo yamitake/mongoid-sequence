@@ -28,6 +28,19 @@ s2 = Sequenced.create
 s2.sequence #=> 2 # and so on
 ```
 
+It is possible to add an additional discriminator to the sequence (e.g. a tenant id)
+```ruby
+class Sequenced
+	include Mongoid::Document
+	include Mongoid::Sequence
+
+  field :my_sequence, :type => Integer
+  belongs_to :organization
+
+	sequence :my_sequence, :organization_id
+end
+```
+
 It's also possible to make the `id` field behave like this:
 
 ```ruby
