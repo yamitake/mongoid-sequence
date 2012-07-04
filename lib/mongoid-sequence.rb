@@ -20,7 +20,7 @@ module Mongoid
     end
 
     def set_sequence
-      sequences = Mongoid.default_session.collection("__sequences")
+      sequences = Mongoid.default_session[:'__sequences']
       prefix = ''
       prefix = self.send(self.class.sequence_prefix).to_s if self.class.sequence_prefix.present?
       self.class.sequence_fields.each do |field|
