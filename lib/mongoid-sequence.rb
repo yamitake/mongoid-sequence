@@ -6,7 +6,7 @@ module Mongoid
     extend ActiveSupport::Concern
 
     included do
-      set_callback :validate, :before, :set_sequence, :unless => :persisted?
+      set_callback :create, :before, :set_sequence, :unless => :persisted?
     end
 
     module ClassMethods
