@@ -14,4 +14,10 @@ class BaseTest < Test::Unit::TestCase
   def teardown
     Mongoid::Sessions.default.use('mongoid_sequence_test').drop
   end
+
+  def assert_sequence_value( name, value )
+    sequence = Mongoid::Sessions.default['__sequences'].where( :_id => name ).one
+    assert_equal( value, sequence['seq'] )
+  end
+
 end

@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/goncalossilva/mongoid-sequence"
 
   gem.add_dependency("mongoid", "~> 3.1")
-  gem.add_dependency("activesupport", "~> 3.2")
+  gem.add_dependency("activesupport", ">= 3.2", "< 5")
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
