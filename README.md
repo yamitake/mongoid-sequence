@@ -16,7 +16,7 @@ Like this:
 class Sequenced
 	include Mongoid::Document
 	include Mongoid::Sequence
-	
+
 	field :my_sequence, :type => Integer
 	sequence :my_sequence
 end
@@ -41,13 +41,29 @@ class Sequenced
 end
 ```
 
+
+If you have an embedded document, you don't have worrying about fake increment inside each child, mongoid-secuence will recognize this association and segregate the count per each child
+```ruby
+class Sequenced
+	include Mongoid::Document
+	include Mongoid::Sequence
+
+  field :my_sequence, :type => Integer
+
+  embedded_in :parent
+
+	sequence :my_sequence
+end
+```
+
+
 It's also possible to make the `id` field behave like this:
 
 ```ruby
 class Sequenced
 	include Mongoid::Document
 	include Mongoid::Sequence
-	
+
 	sequence :_id
 end
 
