@@ -46,4 +46,21 @@ class SequenceTest < BaseTest
 
     assert_equal PrefixSequencedModel.only(:auto_increment).map(&:auto_increment).sort, (1..n).to_a
   end
+
+  def test_embedded_sequence_consistency
+    n = 100
+    m = 2
+    first_parent_model = ParentModel.create
+    second_parent_model = ParentModel.create
+    n.times do |current|
+      m.times do |current_child_count|
+        first_parent_model.children.create
+      end
+      second_parent_model.children.create
+      assert_sequence_value "secuenced_child_model_#{first_parent_model.id.to_s}_auto_increment", (current * m) + m
+      assert_sequence_value "secuenced_child_model_#{second_parent_model.id.to_s}_auto_increment", current + 1
+    end
+    assert_equal first_parent_model.children.only(:auto_increment).map(&:auto_increment).sort, (1..(n*m)).to_a
+    assert_equal second_parent_model.children.only(:auto_increment).map(&:auto_increment).sort, (1..n).to_a
+  end
 end
