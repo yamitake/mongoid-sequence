@@ -24,7 +24,8 @@ module Mongoid
       sequences = self.mongo_session['__sequences']
       prefix    = self.class.sequence_prefix.present? ? self.send(self.class.sequence_prefix).to_s : ''
       self.class.sequence_fields.each do |field|
-        sequence_name = [self.class.name.underscore, prefix, field].select { |f| !f.blank? }.join("_")
+        embedded_relation_id = self.embedded? ? self._parent.id.to_s : nil
+        sequence_name = [self.class.name.underscore, embedded_relation_id, prefix, field].select { |f| !f.blank? }.join("_")
         next_sequence = sequences.where(_id: sequence_name).modify(
             { '$inc' => { seq: 1 } }, upsert: true, new: true
         )
