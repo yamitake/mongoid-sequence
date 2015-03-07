@@ -29,7 +29,7 @@ module Mongoid
         next_sequence = sequences.where(_id: sequence_name).modify(
             { '$inc' => { seq: 1 } }, upsert: true, new: true
         )
-        self[field]   = next_sequence["seq"]
+        self[field]   = next_sequence["seq"].to_s
       end if self.class.sequence_fields
     end
   end
