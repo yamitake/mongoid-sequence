@@ -20,13 +20,12 @@ module Mongoid
     end
 
     def set_sequence
-      sequences = self.mongo_session['__sequences']
+      sequences = self.mongo_client['__sequences']
       prefix    = self.class.sequence_prefix.present? ? self.send(self.class.sequence_prefix).to_s : ''
       self.class.sequence_fields.each do |field|
-        next_sequence = sequences.where(_id: "#{self.class.name.underscore}_#{prefix}_#{field}").modify(
-            { '$inc' => { seq: 1 } }, upsert: true, new: true
-        )
-        self[field]   = next_sequence["seq"]
+        id = "#{self.class.name.underscore}_#{prefix}_#{field}"
+        next_sequence = sequences.find(_id: id).find_one_and_update({'$inc' => {seq: 1}}, {return_document: :after, upsert: true})
+        self[field] = next_sequence["seq"]
       end if self.class.sequence_fields
     end
   end
