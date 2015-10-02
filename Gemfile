@@ -1,4 +1,10 @@
-source 'https://rubygems.org'
+
+source "https://rubygems.org"
+
+gem 'database_cleaner'
+gem 'mongo'
+gem 'mongoid'
+
 
 gemspec
 
