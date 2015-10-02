@@ -17,9 +17,4 @@ class BaseTest < Test::Unit::TestCase
       Mongoid::Clients.default[c].drop
     end
   end
-
-  def assert_sequence_value( name, value )
-    sequence = Mongoid::Clients.default['__sequences'].where( :_id => name ).one
-    assert_equal( value, sequence['seq'] )
-  end
 end
